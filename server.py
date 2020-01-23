@@ -5,7 +5,6 @@ from flask import Flask, request, url_for, redirect, render_template, session, j
 from passlib.hash import sha256_crypt
 
 import datetime
-import requests
 
 # User libraries
 from data import db
