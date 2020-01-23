@@ -1,0 +1,71 @@
+
+{% extends 'layout.html' %}
+
+{% block title %}
+Automaat
+{% endblock %}
+
+{% block body %}
+  <section class="modal">
+      <div class="modal-wrapper">
+        <div class="modal-container box box-round">
+          <h2>Nieuw product toevoegen.</h2>
+          <i class="material-icons close-modal">close</i>
+          <form class="" action="/product/new/{{ data.id }}" method="post">
+            <label>Geef het product een naam.</label>
+            <input class="u-full-width" type="text" name="naam" value="">
+            <label>Hoeveel items van dit product zijn er momenteel in voorraad?</label>
+            <input class="u-full-width" type="text" name="voorraad" value="">
+            <button class="button button-primary" type="submit" name="button">Submit</button>
+          </form>
+        </div>
+      </div>
+  </section>
+  <section class="banner-white banner-auto">
+      <div class="wrapper-center wrapper-medium">
+        <div class="container-big animated fadeIn">
+          <div class="menu">
+            <h1>{{ data.naam }}</h1>
+            <div>
+              <p class="u-pull-left">Nieuw product toevoegen.</p>
+              <i class="material-icons more u-pull-right">add</i>
+            </div>
+          </div>
+          <ul>
+            <li>Locatie: {{ data.locatie }}</li>
+            <li>API key: {{ data.api_key }}</li>
+          </ul>
+          <h4>Producten</h4>
+          <table class="u-full-width">
+              <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Naam</th>
+                    <th>Laatst bijgevuld</th>
+                    <th>Voorraad</th>
+                    <th>Bijvullen op</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for product in data.producten %}
+                    <tr>
+                      <td>{{ product.id }}</td>
+                      <td>{{ product.naam }}</td>
+                      <td>{{ product.laatst_bijgevuld }}</td>
+                      <td>
+                        <form style="margin:0px;" action="/stock/update/{{ product.id }}/{{ data.id }}" method="POST">
+                          <input style="margin:0px;" type="number" name="val" value="{{ product.voorraad }}">
+                          <button style="margin:0px;" class="button" type="submit" name="button">update</button>
+                        </form>
+                      </td>
+                      <td>{{ product.prediction }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <a href="/dashboard">Terug</a>
+          </div>
+        </div>
+    </section>
+
+{% endblock %}

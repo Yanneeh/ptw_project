@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block body %}
+  <section class="banner-white banner-full">
+      <div class="wrapper-center wrapper-small">
+        <div class="container-small full-height animated zoomInRight fast">
+            <div class="middle card card-2 padding banner-white ">
+              <form action="/login" method="post">
+                <h1>Login</h1>
+                {% if err %}
+                  <p style="color: #FF2400;">{{ err }}</p>
+                {% endif %}
+                <label>Email adres</label>
+                <input class="u-full-width" type="email" name="email" value="">
+                <label>Wachtwoord</label>
+                <input class="u-full-width" type="password" name="password" value="">
+                <button class="button button-primary" type="submit" name="button">Submit</button>
+              </form>
+            </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

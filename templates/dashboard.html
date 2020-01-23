@@ -1,0 +1,64 @@
+
+{% extends 'layout.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block body %}
+  <section class="modal">
+      <div class="modal-wrapper">
+        <div class="modal-container box box-round">
+
+          <h2>Nieuwe automaat toevoegen.</h2>
+          <i class="material-icons close-modal">close</i>
+
+          <form class="" action="/automaat/new" method="post">
+            <label>Geef de nieuwe automaat een naam.</label>
+            <input class="u-full-width" type="text" name="naam" value="">
+            <label>Wat is de locatie van de automaat?</label>
+            <input class="u-full-width" type="text" name="locatie" value="">
+            <button class="button button-primary" type="submit" name="button">Submit</button>
+          </form>
+        </div>
+      </div>
+  </section>
+  <section class="banner-white banner-auto">
+      <div class="wrapper-center wrapper-medium">
+        <div class="container-big animated fadeIn">
+          <div class="menu">
+            <h1>Welkom {{ session.naam }}</h1>
+            <div>
+              <p class="u-pull-left">Nieuwe automaat toevoegen.</p>
+              <i class="material-icons more u-pull-right">add</i>
+            </div>
+          </div>
+          <h4>Automaten</h4>
+          <table class="u-full-width">
+              <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Naam</th>
+                    <th>Locatie</th>
+                    <th>API key</th>
+                    <th>Info</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for automaat in data %}
+                    <tr>
+                      <td>{{ automaat.id }}</td>
+                      <td>{{ automaat.naam }}</td>
+                      <td>{{ automaat.locatie }}</td>
+                      <td>{{ automaat.api_key }}</td>
+                      <td><a class="button button-primary" href="/automaat/{{ automaat.id }}">Meer</a></td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <a href="/logout">Uitloggen</a>
+          </div>
+        </div>
+    </section>
+
+{% endblock %}

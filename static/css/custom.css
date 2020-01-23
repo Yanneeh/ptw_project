@@ -1,0 +1,279 @@
+* {
+  margin: 0px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Padding and margin class */
+.padding{
+  padding: 1em;
+}
+
+.margin{
+  margin: 1em;
+}
+
+/* color */
+.white{
+  color: whitesmoke;
+}
+
+.black{
+  color: black;
+}
+
+/* Transition classes */
+.tran1{
+  transition: 0.1s;
+  -webkit-transition-duration: 0.1s;
+}
+
+.tran5{
+  transition: 0.5s;
+  -webkit-transition-duration: 0.5s;
+}
+
+/* Expand more */
+.expand-white{
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  color: whitesmoke;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.expand-white:hover{
+  transition: 0.3s;
+  transform: translateY(0.2em);
+}
+
+.expand-black{
+  color: black;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.expand-black:hover{
+  transition: 0.3s;
+  transform: translateY(0.2em);
+}
+
+/* Wrapper styling */
+.wrapper-center{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.wrapper-small{
+  max-width: 900px;
+}
+
+.wrapper-medium{
+  max-width: 1200px;
+}
+
+.wrapper-big{
+  max-width: 1600px;
+}
+
+/* Container class */
+.container-big{
+  padding: 1em;
+  padding-bottom: 2.5em;
+  padding-top: 2.5em;
+}
+
+.container-medium{
+  padding: 1em;
+  padding-bottom: 2em;
+  padding-top: 2em;
+}
+
+.container-small{
+  padding: 1em;
+  padding-bottom: 1.5em;
+  padding-top: 1.5em;
+}
+
+/* Center class */
+.centered{
+  text-align: center;
+}
+
+.middle{
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+}
+
+.full-height{
+  height: 100vh;
+}
+
+/* Banner with background image styling */
+.banner-background{
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+/* Whitesmoke background styling */
+.banner-whitesmoke{
+  background-color: whitesmoke;
+}
+
+/* Black background styling */
+.banner-black{
+  background-color: rgb(20, 20, 20);
+  color: whitesmoke;
+}
+
+.banner-grey{
+  background-color: gainsboro;
+}
+
+/* White background styling */
+.banner-white{
+  background-color: white;
+  color: black;
+}
+
+/* Background size styling */
+.banner-big{
+  width: 100%;
+  min-height: 700px;
+}
+
+.banner-medium{
+  width: 100%;
+  min-height: 500px;
+}
+
+.banner-small{
+  width: 100%;
+  min-height: 250px;
+}
+
+.banner-tiny{
+  width: 100%;
+  min-height: 100px;
+}
+
+.banner-full{
+  width: 100%;
+  height: 100vh;
+}
+
+.banner-auto{
+  width: 100%;
+  height: inherit;
+}
+
+/* Box styling */
+.box{
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  height: inherit;
+}
+
+.box-container{
+  padding-top: 3em;
+  padding-bottom: 3em;
+}
+
+/* Box rounding */
+.box-round{
+  border-radius: 10px;
+}
+
+/* Card styling */
+.card{
+  border-radius: 10px;
+  margin-bottom: 1em;
+  max-height: inherit;
+}
+
+.card-1 {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.card-1:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.card-2 {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.card-3 {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.card-4 {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.card-5 {
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+
+/* Modal styling */
+.modal{
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+}
+
+.modal-wrapper{
+  max-width: 900px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.modal-container{
+  padding: 1em;
+  background-color: #fff;
+  margin: 1em;
+}
+
+.open-modal:hover{
+  cursor: pointer;
+}
+
+.close-modal{
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  margin: 1em;
+  /* padding: 0.2em; */
+}
+
+.close-modal:hover{
+  cursor: pointer;
+}
+
+/* Dashboard menu */
+.menu{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.more{
+  font-size: 36px;
+}
+
+.more:hover{
+    cursor: pointer;
+}
