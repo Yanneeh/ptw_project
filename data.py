@@ -101,7 +101,7 @@ class Database:
 
 #--------- Database setup ---------#
 
-db = Database('localhost', 'automaat_systeem', 'yannick', 'yaya@2002')
+db = Database('localhost', 'automaat_systeem', 'yannick', '')
 
 
 #----------- Examples -----------#
