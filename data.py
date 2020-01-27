@@ -101,11 +101,8 @@ class Database:
 
 #--------- Database setup ---------#
 
-<<<<<<< HEAD
-db = Database('localhost', 'postgres', 'postgres', 'Y=c@2002')
-=======
+
 db = Database('localhost', 'automaat_systeem', 'yannick', '')
->>>>>>> ef8bcc0631e87fcc569985ffed62b6a0c56c4e58
 
 
 #----------- Examples -----------#
