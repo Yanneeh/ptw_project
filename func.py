@@ -15,88 +15,90 @@ def is_logged_in(f):
 	return wrap
 
 def avg(lst):
-    # Retourneert het afgeronde gemiddelde van een lijst.
-    return int(sum(lst) / len(lst))
+	# Retourneert het afgeronde gemiddelde van een lijst.
+	if len(lst) > 0:
+		return int(sum(lst) / len(lst))
+	return 0
 
 def random_key(stringLength=6):
-    """Generate a random string of letters and digits """
-    lettersAndDigits = string.ascii_letters + string.digits
-    return ''.join(random.choice(lettersAndDigits) for i in range(stringLength))
+	"""Generate a random string of letters and digits """
+	lettersAndDigits = string.ascii_letters + string.digits
+	return ''.join(random.choice(lettersAndDigits) for i in range(stringLength))
 
 
 def predict_restock(records, day, stock):
 
-    """
-    Input:
-        Records:
-            Beschrijving:
-                Verkoopcijfers van een product, gesorteerd per dag.
-                Waar index 0 maandag betekent, dinsdag index 1 enz. tot zondag index 6.
+	"""
+	Input:
+		Records:
+			Beschrijving:
+				Verkoopcijfers van een product, gesorteerd per dag.
+				Waar index 0 maandag betekent, dinsdag index 1 enz. tot zondag index 6.
 
-            Datatype: list (2d).
+			Datatype: list (2d).
 
-            Voorbeeld:
-                [[2, 4, 6], [2, 5, 1], ... , [1, 4, 6]]
+			Voorbeeld:
+				[[2, 4, 6], [2, 5, 1], ... , [1, 4, 6]]
 
-        Day:
-            Beschrijving:
-                Het nummer van de huidige dag. Waar index 0 maandag betekent, dinsdag index 1 enz. tot zondag index 6.
+		Day:
+			Beschrijving:
+				Het nummer van de huidige dag. Waar index 0 maandag betekent, dinsdag index 1 enz. tot zondag index 6.
 
-            Datatype: int.
+			Datatype: int.
 
-        Stock:
-            Beschrijving:
-                Hoeveelheid producten op dit moment aanwezig is in het apparaat.
+		Stock:
+			Beschrijving:
+				Hoeveelheid producten op dit moment aanwezig is in het apparaat.
 
-            Datatype: int.
+			Datatype: int.
 
-    Output:
-        Return type: tuple.
+	Output:
+		Return type: tuple.
 
-        Return values:
-            index 0:
-                Beschrijving:
-                    De dag van de week dat een product bijgevuld moet worden.
+		Return values:
+			index 0:
+				Beschrijving:
+					De dag van de week dat een product bijgevuld moet worden.
 
-                Datatype: int
+				Datatype: int
 
-            index 1:
-                Beschrijving:
-                    Het aantal weken in de toekomst dat product bijgevuld moet worden.
+			index 1:
+				Beschrijving:
+					Het aantal weken in de toekomst dat product bijgevuld moet worden.
 
-                Datatype: int.
+				Datatype: int.
 
-            index 2:
-                Beschrijving:
-                    De hoeveelheid producten die nog in de automaat zitten met bijvullen.
+			index 2:
+				Beschrijving:
+					De hoeveelheid producten die nog in de automaat zitten met bijvullen.
 
-                Datatype: int.
+				Datatype: int.
 
-        Voorbeeld:
-            (4, 0, 2)
+		Voorbeeld:
+			(4, 0, 2)
 
-            index 0: Bijvullen op vrijdag.
-            index 1: Bijvullen in huidige week.
-            index 2: Twee producten over in de automaat
+			index 0: Bijvullen op vrijdag.
+			index 1: Bijvullen in huidige week.
+			index 2: Twee producten over in de automaat
 
-    """
+	"""
 
-    week = 0
+	week = 0
 
-    while (stock - avg(records[day])) >= 0:
+	while (stock - avg(records[day])) >= 0:
 
-        if day == len(records) -1:
-            stock -= avg(records[day])
+		if day == len(records) -1:
+			stock -= avg(records[day])
 
-            day = 0
-            week += 1
-        else:
-            stock -= avg(records[day])
+			day = 0
+			week += 1
+		else:
+			stock -= avg(records[day])
 
-            day += 1
+			day += 1
 
 
-    return (day-1), week, stock
+	return (day-1), week, stock
 
 #---------- Examples ----------#
 

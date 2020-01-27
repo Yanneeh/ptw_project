@@ -1,17 +1,18 @@
 # Flask
-from flask import Flask, request, url_for, redirect, render_template, session, jsonify
+from flask import Flask, request, url_for, redirect, render_template, session, jsonify, abort
 
 # Cryptography
 from passlib.hash import sha256_crypt
 
 import datetime
+from pprint import pprint
 
 # User libraries
 from data import db
 from func import predict_restock, is_logged_in, random_key
 
 app = Flask('app')
-app.secret_key = 'SECRET'
+app.secret_key = 'SECRET' # Verander dit!!!
 
 # Landing page
 @app.route('/')
@@ -45,7 +46,7 @@ def login():
 	else:
 		return render_template('login.html')
 
-# Dashboard voor
+# Dashboard voor alle automaten
 @app.route('/dashboard')
 @is_logged_in
 def dashboard():
@@ -65,6 +66,7 @@ def dashboard():
 
 	return render_template('dashboard.html', data=data)
 
+# Specifiek automaat
 @app.route('/automaat/<int:id>')
 @is_logged_in
 def automaat(id):
@@ -79,40 +81,70 @@ def automaat(id):
 					'naam': automaat['naam'],
 					'locatie': automaat['locatie'],
 					'api_key': automaat['api_key'],
-					'producten': [],
+					'producten': []
 				}
 
 				producten = db.fetch_data('producten')
 				verkoop = db.fetch_data('verkoop')
 
 				for product in producten:
+
 					if product['automaat_id'] == id:
 
-						# print(verkoop)
-						#
-						# for item in verkoop:
+						records = [[], [], [], [], [], [], []]
 
-						# records = [
-						# 	[0, 3, 2, 3, 4, 1],
-						# 	[2, 4, 1, 8, 2, 3],
-						# 	[6, 8, 4, 12, 3, 10],
-						# 	[4, 6, 7, 3, 6, 6],
-						# 	[9, 7, 20, 16, 12, 13],
-						# 	[4, 6, 7, 3, 6, 6],
-						# 	[4, 6, 7, 3, 6, 6]
-						# ]
-						# 												#
-						# day = datetime.datetime.today().weekday()
-						#
-						# prediction = predict_restock(records, day, )
+						for item in verkoop:
 
+							if item['product_id'] == product['id']:
+								# print(item)
+
+								records[item['dag_nummer']].append(int(item['aantal']))
+
+						for record in records:
+							if len(record) == 0:
+								records = [
+								    [0, 3, 2, 3, 4, 1],
+								    [2, 4, 1, 8, 2, 3],
+								    [6, 8, 4, 12, 3, 10],
+								    [4, 6, 7, 3, 6, 6],
+								    [9, 7, 20, 16, 12, 13],
+								    [4, 6, 7, 3, 6, 6],
+								    [4, 6, 7, 3, 6, 6],
+								]
+
+						# pprint(records)
+
+						day = datetime.datetime.today().weekday()
+
+						prediction = predict_restock(records, day, product['stock'])
+
+						if prediction[0] == 0:
+							prediction = f"maandag over {prediction[1]} weken"
+
+						if prediction[0] == 1:
+							prediction = f"dinsdag over {prediction[1]} weken"
+
+						if prediction[0] == 2:
+							prediction = f"woensdag over {prediction[1]} weken"
+
+						if prediction[0] == 3:
+							prediction = f"donderdag over {prediction[1]} weken"
+
+						if prediction[0] == 4:
+							prediction = f"vrijdag over {prediction[1]} weken"
+
+						if prediction[0] == 5:
+							prediction = f"zaterdag over {prediction[1]} weken"
+
+						if prediction[0] == 6:
+							prediction = f"zondag over {prediction[1]} weken"
 
 						data['producten'].append({
 							'id': product['id'],
 							'naam': product['naam'],
 							'laatst_bijgevuld': product['laatst_bijgevuld'],
 							'voorraad': product['stock'],
-							'prediction': 'not implemented'
+							'prediction': prediction
 						})
 
 				return render_template('automaat.html', data=data)
@@ -152,7 +184,7 @@ def new_product(vm_id):
 
 		return redirect(url_for('automaat', id=vm_id))
 
-
+# Update de voorraad van een product.
 @app.route('/stock/update/<int:product_id>/<int:automaat_id>', methods=["POST"])
 @is_logged_in
 def update_stock(product_id, automaat_id):
@@ -163,6 +195,9 @@ def update_stock(product_id, automaat_id):
 		val = request.form.get('val')
 		date = datetime.date.today()
 
+		if int(val) < 0:
+			val = 0
+
 		db.execute_cmd(f"UPDATE producten SET stock='{val}', laatst_bijgevuld='{date}' WHERE id='{product_id}';")
 
 		db.commit_execution()
@@ -172,15 +207,65 @@ def update_stock(product_id, automaat_id):
 @app.route('/checkout', methods=["POST"])
 def checkout():
 	if request.method == "POST":
-		data = request.get_json()
 
 		# INPUT:
 		# Product id, automaat id, API KEY
 
-		id = data['id']
-		api_key = data['api_key']
+		product_id = int(request.args.get('product_id'))
+		automaat_id = int(request.args.get('automaat_id'))
+		api_key = str(request.args.get('API_key'))
 
-		return {'status': 'succes'}
+		automaten = db.fetch_data('automaten')
+
+		for automaat in automaten:
+
+			# Vind de automaat met meegegeven automaat id.
+			if automaat['id'] == automaat_id:
+
+				# Check of de API key die meegegeven is overeenkomt met de API key in de database.
+				if automaat['api_key'] == api_key:
+
+					print('authenticated')
+
+					producten = db.fetch_data('producten')
+
+					for product in producten:
+
+						# Vind een product met megegeven product id.
+						if product['id'] == product_id:
+
+							val = product['stock'] - 1
+
+							if val < 0:
+								val = 0
+
+							db.execute_cmd(f"UPDATE producten SET stock='{val}' WHERE id='{product_id}';")
+
+							verkoop = db.fetch_data('verkoop')
+							day = datetime.datetime.today().weekday()
+							date = datetime.date.today()
+
+							for item in verkoop:
+								if item['product_id'] == product_id:
+									if item['datum'] == datetime.date.today():
+										print(item)
+
+										stock = item['aantal'] + 1
+
+										db.execute_cmd(f"UPDATE verkoop SET aantal='{stock}' WHERE product_id='{product_id}';")
+
+										db.commit_execution()
+
+										return {'status': 'succes'}
+
+							db.execute_cmd(f"INSERT INTO verkoop (product_id, aantal, dag_nummer, datum) VALUES ('{product_id}', '{1}', '{day}', '{date}');")
+
+							db.commit_execution()
+
+							return {'status': 'succes'}
+
+		return abort(401)
+	return abort(404)
 
 @app.route('/logout')
 def logout():
